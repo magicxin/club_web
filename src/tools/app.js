@@ -21,7 +21,7 @@ export default {
      return false;
  }
       }
-    })
+   })
     Vue.prototype.axios = axios 
  	Vue.prototype.setAttr = function(name,obj){
  		this[name] = obj

@@ -1,16 +1,9 @@
 <template>
 	<ma-container class="h5function">
 		<ma-aside>
-			<ma-box border="1px solid #ccc">组件</ma-box>
-			<layout justify="center" wrap="wrap">
-				<ma-box v-for="(item,index) in components" @tap="" :key="index" width="50px" height="50px" border="1px solid #7AC6F5" radius="5px" margin="1em 1em 0 0">{{item.name}}</ma-box>
-				<!--<ma-box :center="true" width="50px" height="50px" border="1px solid #7AC6F5" radius="5px" margin="1em 1em 0 0">flex</ma-box>
-				<ma-box :center="true" width="50px" height="50px" border="1px solid #7AC6F5" radius="5px" margin="1em 1em 0 0">ma-box</ma-box>
-				<ma-box :center="true" width="50px" height="50px" border="1px solid #7AC6F5" radius="5px" margin="1em 1em 0 0">ma-input</ma-box>
-				<ma-box :center="true" width="50px" height="50px" border="1px solid #7AC6F5" radius="5px" margin="1em 1em 0 0">ma-container</ma-box>
-				<ma-box :center="true" width="50px" height="50px" border="1px solid #7AC6F5" radius="5px" margin="1em 1em 0 0">ma-header</ma-box>
-				<ma-box :center="true" width="50px" height="50px" border="1px solid #7AC6F5" radius="5px" margin="1em 1em 0 0">ma-footer</ma-box>
-				<ma-box :center="true" width="50px" height="50px" border="1px solid #7AC6F5" radius="5px" margin="1em 1em 0 0">ma-aside</ma-box>-->
+			<ma-box >组件</ma-box>
+			<layout direction="column">
+				<div class="components" v-for="(item,index) in components" :draggable="true" @dragstart="dragStart" :data-name="item.name">{{item.name}}</div>
 			</layout>
 			<ma-box border="1px solid #ccc" margin="1em 0 0 0">配置选项</ma-box>
 			<layout justify="flex-start" padding="1em 0 0 1em">
@@ -42,14 +35,12 @@
 			</layout>
 		</ma-aside>
 		<ma-main>
-			<layout>
-				<flex class="phone-container">
-					<div id="preview"></div>
-				</flex>
-				<flex class="flex" grow="2">
-					<input v-model="innerHTML"/>
-				</flex>
-			</layout>
+			<div class="phone-container">
+					<div id="preview" @drop="drop" @dragover="dragOver"></div>
+			</div>
+			<div class="css-container">
+				<div v-html="template"></div>
+			</div>
 		</ma-main>
 	</ma-container>
 </template>
@@ -110,24 +101,19 @@ import { Photoshop } from 'vue-color'
 				  },{
 				  	name:'maaside'
 				  }],
-				  innerHTML:''
+				  template:''
 				}
 		},
 		watch:{
 			colors(newV,oldV){
 				return newV
-			},
-			innerHTML(newV,oldV){
-				h5Function({
-				    inner: newV
-				});
 			}
 		},
 		mounted(){
 			let that = this
 //			h5Function(document.getElementById('preview'));
 			h5Function(document.getElementById('preview'), {
-				    innerHTML: '1',
+				    innerHTML: this.template,
 				    view: 'front',
 				    image: phone,
 				    width:'320',
@@ -149,6 +135,16 @@ import { Photoshop } from 'vue-color'
 			showPhotoshop(){
 				window.event.preventDefault()
 				this.show_photoshop = !this.show_photoshop
+			},
+			dragStart(e){
+				e.dataTransfer.setData("Text",e.target.id);
+			},
+			drop(e){
+				e.preventDefault();
+				this.template = `<ma-box>aaa</ma-box>`
+			},
+			dragOver(e){
+				e.preventDefault();
 			}
 		},
 		components:{
@@ -166,11 +162,14 @@ import { Photoshop } from 'vue-color'
 		height:100%;
 	}
 	.phone-container{
+		height:100%;
 		position:relative;
 		display:flex;
+		flex:1 1 0;
 		border:1px solid #000;
 	}
-	.flex{
+	.css-container{
+		flex:1 1 0;
 		border:1px solid #000;
 	}
 	.color-pick{
@@ -181,5 +180,14 @@ import { Photoshop } from 'vue-color'
 		top:0;
 		left:2em;
 		z-index:1000;
+	}
+	.components{
+		width:100%;
+		height:50px;
+		border:1px solid #000;
+		cursor: pointer;
+	}
+	.ma-main{
+		display:flex;
 	}
 </style>

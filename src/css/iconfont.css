@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'iconfont';  /* project id 529530 */
-  src: url('//at.alicdn.com/t/font_529530_xmyjkdt8qfm0lik9.eot');
-  src: url('//at.alicdn.com/t/font_529530_xmyjkdt8qfm0lik9.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_529530_xmyjkdt8qfm0lik9.woff') format('woff'),
-  url('//at.alicdn.com/t/font_529530_xmyjkdt8qfm0lik9.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_529530_xmyjkdt8qfm0lik9.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_529530_d015qtyxl3ul3di.eot');
+  src: url('//at.alicdn.com/t/font_529530_d015qtyxl3ul3di.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_529530_d015qtyxl3ul3di.woff') format('woff'),
+  url('//at.alicdn.com/t/font_529530_d015qtyxl3ul3di.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_529530_d015qtyxl3ul3di.svg#iconfont') format('svg');
 }
 i {
 	display:flex;
@@ -29,3 +29,4 @@ i {
 .icon-xihuan:before { content: "\e61f"; color:#63B8FF; font-size:28px;}
 .icon-xihuan1:before { content: "\e67c"; color:#CD3700; font-size:16px;}
 .icon-pinglun:before { content: "\e636"; color:#000; font-size:16px;}
+.icon-github:before { content: "\ead8"; color:#000; font-size:28px;}

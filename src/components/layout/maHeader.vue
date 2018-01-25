@@ -1,6 +1,6 @@
 <template>
-	<div class="ma-header"  :style="{height:height}">
-		
+	<div class="ma-header" :style="{height:height,background:background}">
+		<slot></slot>
 	</div>
 </template>
 
@@ -14,6 +14,10 @@
 				default(){
 					return '50px'
 				}
+			},
+			background: {
+				type: String,
+				required: false
 			}
 		}
 	}
@@ -25,6 +29,5 @@
 	display:flex;
 	flex-flow:row;
 	box-sizing: border-box;
-	border:1px solid #000;
 }
 </style>

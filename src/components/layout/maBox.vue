@@ -7,6 +7,24 @@
   export default{
     name: 'ma-box',
     props: {
+    	display:{
+    		type: String, // 布局方向
+        default () {
+          return 'flex'
+        }
+    	},
+    	justify:{
+    		type: String, // 布局方向
+        default () {
+          return 'center'
+        }
+    	},
+    	align:{
+    		type: String, // 布局方向
+        default () {
+          return 'center'
+        }
+    	},
       color: {
         type: String, // 布局方向
         default () {
@@ -15,9 +33,7 @@
       },
       padding:{
       	type: String, // 布局方向
-        default () {
-          return '4px'
-        }
+      	required:false
       },
       margin:{
       	type: String, // 布局方向
@@ -61,11 +77,6 @@
           return ''
         }
       },
-      center:{
-      	default () {
-          return false
-        }
-      },
       wrap:{
       	default () {
           return 'nowrap'
@@ -94,9 +105,9 @@
           'font-size':this.fontsize,
           'height':this.height?this.height:null,
           'width':this.width?this.width:null,
-          'justify-content':this.center?'center':null,
-          'align-items':this.center?'center':null,
-          'display':this.center?'flex':'block',
+          'justify-content':this.justify?this.justify:null,
+          'align-items':this.align?this.align:null,
+          'display':this.display?this.display:null,
           'flex-wrap':this.wrap,
           'line-height':this.lineheight?this.lineheight:null
         }

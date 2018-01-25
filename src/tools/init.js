@@ -8,7 +8,7 @@ export default function(){
 		setTimeout(function(){
 			resolve({
 				LANG:'cn',
-				COLOR:'#666',
+				COLOR:'#F98700',
 				HOMENAV:['marketing','system','personal']
 			})
 		},1000)

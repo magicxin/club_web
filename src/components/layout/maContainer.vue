@@ -30,6 +30,5 @@
 .ma-container{
 	display:flex;
 	box-sizing: border-box;
-	border:1px solid #000;
 }
 </style>

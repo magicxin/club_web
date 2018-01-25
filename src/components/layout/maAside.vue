@@ -1,5 +1,5 @@
 <template>
-	<div class="ma-aside"  :style="{width:width,height:height}">
+	<div class="ma-aside" :style="{width:width,height:height,padding:padding}">
 		<slot></slot>
 	</div>
 </template>
@@ -21,7 +21,14 @@
 				default(){
 					return '100%'
 				}
-			}
+			},
+			padding: {
+				type: String,
+				required: false,
+				default(){
+					return '1em'
+				}
+			},
 		}
 	}
 </script>
