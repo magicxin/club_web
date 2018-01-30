@@ -15,28 +15,29 @@
 			</layout>
 			<layout direction="column" align="flex-start" padding="1em">
 				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">字体颜色：</ma-box> <ma-input border="1px solid #000" :model="mcolor"></ma-input>
+					<ma-box fontsize="10px">字体颜色：</ma-box> <ma-input border="1px solid #000" @change="onchange" :currentValue="attribute['color']"></ma-input>
 				</layout>
 				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">边框：</ma-box> <ma-input border="1px solid #000" :model="mborder"></ma-input>
+					<ma-box fontsize="10px">边框：</ma-box> <ma-input border="1px solid #000" :currentValue="attribute['border']"></ma-input>
 				</layout>
 				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">字体大小：</ma-box> <ma-input border="1px solid #000" :model="mfontsize"></ma-input>
+					<ma-box fontsize="10px">字体大小：</ma-box> <ma-input border="1px solid #000" :currentValue="attribute['font-size']"></ma-input>
 				</layout>
 				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">padding：</ma-box> <ma-input border="1px solid #000" :model="mpadding"></ma-input>
+					<ma-box fontsize="10px">padding：</ma-box> <ma-input border="1px solid #000" :currentValue="attribute['padding']"></ma-input>
 				</layout>
 				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">margin：</ma-box> <ma-input border="1px solid #000" :model="mmargin"></ma-input>
+					<ma-box fontsize="10px">margin：</ma-box> <ma-input border="1px solid #000" :currentValue="attribute['margin']"></ma-input>
 				</layout>
 				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">角度：</ma-box> <ma-input border="1px solid #000" :model="mradius"></ma-input>
+					<ma-box fontsize="10px">角度：</ma-box> <ma-input border="1px solid #000" :currentValue="attribute['border-radius']"></ma-input>
 				</layout>
 			</layout>
 		</ma-aside>
 		<ma-main>
-			<div class="phone-container">
-					<div id="preview" @drop="drop" @dragover="dragOver"></div>
+			<div class="phone-container" id="preview" @drop="drop" @dragover="dragOver">
+				<div ref="test"></div>
+					<!--<div id="preview" @drop="drop" @dragover="dragOver"></div>-->
 			</div>
 			<div class="css-container">
 				<div v-html="template"></div>
@@ -48,7 +49,10 @@
 <script>
 
 import service from 'services/h5function'
+import temp from 'tools/componentsToString'
+import mount from 'tools/mount'
 import h5Function from 'utilities/biomp'
+import guid from 'tools/guid'
 import phone from 'assets/h5function/iphone6_front_white.png'
 import { Photoshop } from 'vue-color'
 	export default {
@@ -77,52 +81,61 @@ import { Photoshop } from 'vue-color'
 					  },
 					  a: 1
 				  },
-				  'mcolor':'',
-				  'mborder':'',
-				  'mpadding':'',
-				  'mmargin':'',
-				  'mfontsize':'',
-				  'mradius':'',
+				  attribute:{
+				  	  'color':'',
+					  'border':'',
+					  'padding':'',
+					  'margin':'',
+					  'font-size':'',
+					  'border-radius':''
+				  },
 				  show_photoshop:false,
 				  components:[{
 				  	name:'layout'
 				  },{
 				  	name:'flex'
 				  },{
-				  	name:'mabox'
+				  	name:'ma-box'
 				  },{
-				  	name:'mainput'
+				  	name:'ma-input'
 				  },{
-				  	name:'macontainer'
+				  	name:'ma-container'
 				  },{
-				  	name:'maheader'
+				  	name:'ma-header'
 				  },{
-				  	name:'mafooter'
+				  	name:'ma-footer'
 				  },{
-				  	name:'maaside'
+				  	name:'ma-aside'
 				  }],
-				  template:''
+				  template:'',
+				  currentComponent:''
 				}
 		},
 		watch:{
 			colors(newV,oldV){
 				return newV
-			}
+			},
+//			attribute:{
+//				handler(newV,oldV){
+//					console.log(newV)
+//				},
+//				deep:true
+//			}
 		},
 		mounted(){
 			let that = this
 //			h5Function(document.getElementById('preview'));
-			h5Function(document.getElementById('preview'), {
-				    innerHTML: this.template,
-				    view: 'front',
-				    image: phone,
-				    width:'320',
-				    height:'480'
-				});
-			this.axios.get('/create_file')
-			.then(res=>{
-				console.log(res)
-			})
+//			h5Function(document.getElementById('preview'), {
+//				    innerHTML: this.template,
+//				    view: 'front',
+//				    image: phone,
+//				    width:'320',
+//				    height:'480'
+//				});
+//			this.axios.get('/create_file')
+//			.then(res=>{
+//				console.log(res)
+//			})
 		},
 		methods:{
 			stopEvent(){
@@ -137,14 +150,45 @@ import { Photoshop } from 'vue-color'
 				this.show_photoshop = !this.show_photoshop
 			},
 			dragStart(e){
+				this.currentComponent = e.target.attributes['data-name'].value
+//				console.log(temp({
+//					name:e.target.attributes['data-name'].value,
+//					show:'测试显示内容',
+//					attribute:this.attribute
+//				}))
+				this.template = temp({
+					name:e.target.attributes['data-name'].value
+				})
 				e.dataTransfer.setData("Text",e.target.id);
 			},
 			drop(e){
 				e.preventDefault();
-				this.template = `<ma-box>aaa</ma-box>`
+				mount(this.$refs['test'],{
+					id:guid(),
+					show:'测试显示内容',
+					attributes:this.attribute,
+					template:this.template
+				})
 			},
 			dragOver(e){
 				e.preventDefault();
+			},
+			onchange(e){
+				if (!this.currentComponent) {
+					this.toast('请选择一个组件')
+					return
+				}
+				this.attribute['color'] = e.target.value
+				this.template = temp({
+					name:this.currentComponent,
+					show:'测试显示内容',
+					attribute:this.attribute
+				})
+				mount(this.$refs['test'],{
+					id:guid(),
+					attributes:this.attribute,
+					template:this.template
+				})
 			}
 		},
 		components:{

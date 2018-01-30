@@ -1,6 +1,6 @@
 <template>
   <div :style="layoutCss" class="ma-input">
-    <input type="text" v-model="model"/>
+    <input type="text" :value="currentValue" @input="handleAccept" @change="changeAccept"/>
   </div>
 </template>
 <script>
@@ -49,7 +49,7 @@
           return '14px'
         }
       },
-      model:{
+      currentValue:{
         default () {
           return ''
         }
@@ -57,8 +57,30 @@
     },
     data () {
       return {
-        layout: null
+        layout: null,
+//      value:''
       }
+    },
+    watch:{
+//  	value(newV,oldV){
+//  		console.log(newV)
+//  		this.setCurrentValue(newV);
+//  	}
+	value(newV,oldV){
+    		return newV
+    	}
+    },
+    methods:{
+//  	setCurrentValue(value) {
+//      if (value === this.currentValue) return;
+//      this.currentValue = value;
+//    },
+      handleAccept(e){
+    		this.$emit('input',e)
+    	},
+    	changeAccept(e){
+    		this.$emit('change',e)
+    	}
     },
     computed: {
       layoutCss () {
