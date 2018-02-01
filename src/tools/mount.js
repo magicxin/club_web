@@ -1,7 +1,11 @@
 import Vue from 'vue'
- 
-var mount = function(el, _component) {
-	console.log(_component.attributes)
+var mount = function(id, _component) {
+	console.log(_component)
+//  let components = _Vue.$store.state.components
+//  let component = components.find(c => c.info.id === id)
+    return new Promise((resolve, reject) => {
+        //需要延迟才能取到document.getElementById(id)
+        setTimeout(() => {
             let data={}
             if (_component.attributes) {
                 Object.keys(_component.attributes).forEach(key => {
@@ -9,14 +13,15 @@ var mount = function(el, _component) {
                 })
             }
             let vm = new Vue({
-                name: el.id.toString(),
+                name: id.toString(),
                 data() {
                     return data
                 },
                 template: _component.template,
-                el: el,
+                el: document.getElementById(id),
                 mounted() {
-                    this.$el.id = el.id
+                	console.log('mounted')
+                    this.$el.id = id
 //                  if (component) {
 //                      component.uid = this._uid
 //                  }
@@ -28,6 +33,10 @@ var mount = function(el, _component) {
 
                 }
             })
+            resolve(vm)
+
+        }, 1000)
+    })
 }
 
 export default mount

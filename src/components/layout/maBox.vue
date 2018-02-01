@@ -1,5 +1,5 @@
 <template>
-  <div :style="layoutCss" class="ma-box" @click="handleAccept">
+  <div :style="layoutCss" :id="id" class="ma-box" @click="handleAccept">
     <slot></slot>
   </div>
 </template>
@@ -7,6 +7,9 @@
   export default{
     name: 'ma-box',
     props: {
+    	id:{
+    		type: String
+    	},
     	display:{
     		type: String, // 布局方向
         default () {
@@ -47,7 +50,7 @@
           return 'none'
         }
       },
-      radius:{
+      borderradius:{
       	type: String, // 布局方向
         default () {
           return 'none'
@@ -100,7 +103,7 @@
           'padding':this.padding,
           'margin':this.margin,
           'border':this.border,
-          'border-radius':this.radius,
+          'border-radius':this.borderradius,
           'background':this.background,
           'font-size':this.fontsize,
           'height':this.height?this.height:null,

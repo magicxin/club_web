@@ -1,10 +1,10 @@
 export default function(data){
-	console.log(data.attribute)
+	console.log(data)
 	let attributes = ''
 	let template = ''
 	for(let key in data.attribute){
 		if(data.attribute[key]){
-			attributes += `${key}=${data.attribute[key]} `
+			attributes += `${key}="${data.attribute[key]}" `
 		}
 //		else{
 //			attributes += ''

@@ -14,29 +14,15 @@
 				</ma-box>
 			</layout>
 			<layout direction="column" align="flex-start" padding="1em">
-				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">字体颜色：</ma-box> <ma-input border="1px solid #000" @change="onchange" :currentValue="attribute['color']"></ma-input>
-				</layout>
-				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">边框：</ma-box> <ma-input border="1px solid #000" :currentValue="attribute['border']"></ma-input>
-				</layout>
-				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">字体大小：</ma-box> <ma-input border="1px solid #000" :currentValue="attribute['font-size']"></ma-input>
-				</layout>
-				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">padding：</ma-box> <ma-input border="1px solid #000" :currentValue="attribute['padding']"></ma-input>
-				</layout>
-				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">margin：</ma-box> <ma-input border="1px solid #000" :currentValue="attribute['margin']"></ma-input>
-				</layout>
-				<layout justify="space-between" :over="true" margin="0 0 .5em 0">
-					<ma-box fontsize="10px">角度：</ma-box> <ma-input border="1px solid #000" :currentValue="attribute['border-radius']"></ma-input>
+				<layout justify="space-between" :over="true" margin="0 0 .5em 0" v-for="(item,index) in controls" :key="index">
+					<ma-box fontsize="10px">{{item.title}}：</ma-box> <ma-input border="1px solid #000" @change="onchange($event,item.name)" :currentValue="attribute[item.name]"></ma-input>
 				</layout>
 			</layout>
 		</ma-aside>
 		<ma-main>
 			<div class="phone-container" id="preview" @drop="drop" @dragover="dragOver">
-				<div ref="test"></div>
+				<div id="test"></div>
+				<div id="test1"></div>
 					<!--<div id="preview" @drop="drop" @dragover="dragOver"></div>-->
 			</div>
 			<div class="css-container">
@@ -59,6 +45,32 @@ import { Photoshop } from 'vue-color'
 		name:'h5function',
 		data(){
 			return {
+				controls:[
+					{
+						title:'字体颜色',
+						name:'color'
+					},
+					{
+						title:'边框',
+						name:'border'
+					},
+					{
+						title:'字体',
+						name:'fontsize'
+					},
+					{
+						title:'间距',
+						name:'padding'
+					},
+					{
+						title:'距离',
+						name:'margin'
+					},
+					{
+						title:'圆角',
+						name:'borderradius'
+					},
+				],
 				  colors:{
 				  	  hex: '#194d33',
 					  hsl: {
@@ -157,37 +169,55 @@ import { Photoshop } from 'vue-color'
 //					attribute:this.attribute
 //				}))
 				this.template = temp({
-					name:e.target.attributes['data-name'].value
+					name:e.target.attributes['data-name'].value,
+					show:'测试显示内容',
+					attribute:this.attribute
 				})
 				e.dataTransfer.setData("Text",e.target.id);
 			},
 			drop(e){
 				e.preventDefault();
-				mount(this.$refs['test'],{
-					id:guid(),
-					show:'测试显示内容',
-					attributes:this.attribute,
-					template:this.template
-				})
+				this.mount('test')
 			},
 			dragOver(e){
 				e.preventDefault();
 			},
-			onchange(e){
+			onchange(e,name){
+//				console.log(e)
+				console.log(name)
 				if (!this.currentComponent) {
 					this.toast('请选择一个组件')
 					return
 				}
-				this.attribute['color'] = e.target.value
-				this.template = temp({
-					name:this.currentComponent,
-					show:'测试显示内容',
-					attribute:this.attribute
+				this.controls.forEach((item,index)=>{
+					if(item.name === name){
+						this.attribute[name] = e.target.value
+						this.template = temp({
+							name:this.currentComponent,
+							show:'测试显示内容',
+							attribute:this.attribute
+						})
+						this.mount('test')
+					}
 				})
-				mount(this.$refs['test'],{
-					id:guid(),
+				
+//				this.attribute['color'] = e.target.value
+//				this.template = temp({
+//					name:this.currentComponent,
+//					show:'测试显示内容',
+//					attribute:this.attribute
+//				})
+//				this.mount('test')
+			},
+			mount(id){
+				let component = {
+					show:'测试显示内容',
 					attributes:this.attribute,
 					template:this.template
+				}
+				mount(id,component)
+				.then(vm=>{
+					let el = document.getElementById(id)
 				})
 			}
 		},
